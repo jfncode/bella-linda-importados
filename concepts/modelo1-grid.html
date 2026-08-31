@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modelo 1 — Grid Clássico</title>
+<style>
+  :root{
+    --bg:#0e1512; --card:#151f1b; --line:#22322c;
+    --txt:#eaf3ef; --mut:#93a79f; --acc:#25d366; --acc2:#1eb955;
+    --price:#ffd479;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font:16px/1.5 system-ui,Segoe UI,Roboto,sans-serif}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+  header{position:sticky;top:0;z-index:20;background:rgba(14,21,18,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;gap:12px;height:60px}
+  .logo{font-weight:800;font-size:20px;letter-spacing:.5px}
+  .logo span{color:var(--acc)}
+  .search{flex:1;display:flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
+  .search input{flex:1;background:none;border:none;color:var(--txt);outline:none;font-size:14px}
+  .zap{display:inline-flex;align-items:center;gap:6px;background:var(--acc);color:#062b16;font-weight:700;padding:9px 14px;border-radius:999px;font-size:14px;white-space:nowrap}
+
+  .hero{background:linear-gradient(135deg,#153126,#0e1512);border-bottom:1px solid var(--line);padding:34px 0}
+  .hero h1{font-size:26px;line-height:1.2;max-width:620px}
+  .hero p{color:var(--mut);margin:8px 0 16px;max-width:560px}
+  .flag{font-size:13px;color:var(--acc);font-weight:700}
+
+  .chips{display:flex;gap:8px;overflow-x:auto;padding:16px 0;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--mut);padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer}
+  .chip.on{background:var(--acc);color:#062b16;border-color:var(--acc)}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:40px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.15s}
+  .card:hover{transform:translateY(-3px);border-color:var(--acc)}
+  .thumb{aspect-ratio:1;display:grid;place-items:center;font-size:46px;background:radial-gradient(circle at 30% 25%,#20302a,#131c18)}
+  .info{padding:12px}
+  .info h3{font-size:14px;font-weight:600;min-height:38px}
+  .tag{display:inline-block;font-size:11px;color:var(--mut);margin-top:2px}
+  .price{color:var(--price);font-weight:800;font-size:17px;margin:6px 0 10px}
+  .buy{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;background:var(--acc);color:#062b16;font-weight:700;border:none;border-radius:10px;padding:10px;font-size:13px;cursor:pointer}
+  .buy:active{background:var(--acc2)}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-size:14px}
+  .frow{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between}
+  .fab{position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:var(--acc);display:grid;place-items:center;font-size:26px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:30}
+
+  @media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:21px}.search{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <div class="logo">Loja<span>PY</span></div>
+    <label class="search"><input placeholder="Buscar produto..."></label>
+    <a class="zap" href="#">🟢 WhatsApp</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="flag">🇵🇾 IMPORTADOS DO PARAGUAI</div>
+    <h1>Os melhores importados com preço de fronteira</h1>
+    <p>Escolha o produto e finalize direto no WhatsApp. Sem cadastro, sem burocracia.</p>
+    <a class="zap" href="#grid">Ver catálogo ↓</a>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="chips">
+    <div class="chip on">Todos</div>
+    <div class="chip">Perfumes</div>
+    <div class="chip">Eletrônicos</div>
+    <div class="chip">Bebidas</div>
+    <div class="chip">Maquiagem</div>
+    <div class="chip">Acessórios</div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  <div class="wrap frow">
+    <div><b>LojaPY</b> · Importados do Paraguai<br>Atendimento: Seg–Sáb, 9h–19h</div>
+    <div>📱 (00) 90000-0000<br>📷 @sualoja · 📍 Sua cidade</div>
+  </div>
+</footer>
+
+<a class="fab" href="#" title="Fale conosco">🟢</a>
+
+<script>
+  // TROQUE pelo número real (formato: 55 + DDD + numero)
+  const ZAP = "5500900000000";
+  const produtos = [
+    {n:"Perfume 212 VIP 100ml", c:"Perfumes", p:"320", e:"🌸"},
+    {n:"Fone Bluetooth Pro", c:"Eletrônicos", p:"180", e:"🎧"},
+    {n:"Whisky Red Label 1L", c:"Bebidas", p:"95", e:"🥃"},
+    {n:"Paleta de Sombras 18 cores", c:"Maquiagem", p:"75", e:"💄"},
+    {n:"Smartwatch D20", c:"Eletrônicos", p:"120", e:"⌚"},
+    {n:"Perfume Good Girl 80ml", c:"Perfumes", p:"290", e:"🌸"},
+    {n:"Caixa de Som JBL", c:"Eletrônicos", p:"260", e:"🔊"},
+    {n:"Óculos de Sol UV400", c:"Acessórios", p:"85", e:"🕶️"},
+    {n:"Power Bank 20000mAh", c:"Eletrônicos", p:"140", e:"🔋"},
+  ];
+  const grid = document.getElementById("grid");
+  grid.innerHTML = produtos.map(p=>`
+    <article class="card">
+      <div class="thumb">${p.e}</div>
+      <div class="info">
+        <h3>${p.n}</h3>
+        <span class="tag">${p.c}</span>
+        <div class="price">R$ ${p.p}</div>
+        <button class="buy" onclick="pedir('${p.n.replace(/'/g,"")}')">🟢 Pedir no Zap</button>
+      </div>
+    </article>`).join("");
+
+  function pedir(nome){
+    const msg = encodeURIComponent(`Olá! Tenho interesse no produto: ${nome}. Ainda tem disponível?`);
+    window.open(`https://wa.me/${ZAP}?text=${msg}`,"_blank");
+  }
+  document.querySelectorAll(".zap,.fab").forEach(el=>el.href=`https://wa.me/${ZAP}?text=${encodeURIComponent("Olá! Vi o catálogo e quero saber mais.")}`);
+  // chips visuais
+  document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{document.querySelector(".chip.on").classList.remove("on");c.classList.add("on")});
+</script>
+</body>
+</html>

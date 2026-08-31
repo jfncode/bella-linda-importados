@@ -1,0 +1,15 @@
+# servidor local / túnel (gerados)
+serve/
+tunnel.log
+
+# fontes pesadas das imagens (regeneráveis) — mantemos só os .jpg usados
+img/*.png
+canva/*.png
+canva/sheet.png
+canva/strip.png
+
+# sistema / editores
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
